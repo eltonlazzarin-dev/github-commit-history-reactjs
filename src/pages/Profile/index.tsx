@@ -102,7 +102,7 @@ const Profile: React.FC = () => {
           </Tab>
 
           <Repos>
-            <h2>Random repos</h2>
+            <h2>Popular repositories</h2>
 
             <div>
               {data.repos.map((item) => (
