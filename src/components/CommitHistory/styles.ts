@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Container = styled.li`
-  padding: 20px;
+  padding: 8px 16px;
   border-top: grey solid 1px; 
 `;
 
