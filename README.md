@@ -35,7 +35,7 @@ This project uses the resources of the GitHub API, therefore, when clicking on a
 
 Technologies that I used to develop this frontend app
 
-- [ReactJS](https://nodejs.org/en)
+- [ReactJS](https://reactjs.org/)
 - [TypeScript](https://www.typescriptlang.org)
 - [Date-FNS](https://date-fns.org/docs/Getting-Started)
 - [React-Icons](https://react-icons.github.io/react-icons/)
