@@ -15,12 +15,10 @@ export const Container = styled.div`
 
 export const Breadcrumb = styled.div`
   margin-bottom: 16px;
-
   display: flex;
   align-items: center;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   white-space: nowrap;
-
   font-size: 18px;
 
   > a {

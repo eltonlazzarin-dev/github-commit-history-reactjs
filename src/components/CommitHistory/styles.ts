@@ -32,6 +32,7 @@ export const CommitId = styled.a`
     border: grey 1px solid;
     border-radius: 5px;
     padding: 5px;
+    margin: 5px;
     color: #1b6ca8;
     min-width: 80px;
     text-align: center;
