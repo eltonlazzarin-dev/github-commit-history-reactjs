@@ -42,8 +42,8 @@ const Profile: React.FC = () => {
 
       const user = await userResponse.json();
       const repos = await reposResponse.json();
-
-      const shuffledRepos = repos.sort(() => 0.5 - Math.random());
+      
+      const shuffledRepos = [].slice.call(repos).sort(() => 0.5 - Math.random());
       const slicedRepos = shuffledRepos.slice(0, 6); // 6 repos
 
       setData({

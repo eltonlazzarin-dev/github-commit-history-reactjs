@@ -22,3 +22,17 @@ export interface APIRepo {
   language?: string;
   description?: string;
 }
+
+export interface APICommit {
+  author: {
+    avatar_url: string;
+  }
+  commit: {
+    message: string;
+    author: {
+      name: string;
+      date: string;
+    }
+  }
+  sha: string;
+}

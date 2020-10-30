@@ -85,6 +85,7 @@ export const LinkButton = styled.a`
   text-decoration: none;
 
   margin-top: 24px;
+  margin-bottom: 50px;
   background: var(--gray-dark);
   padding: 12px 17px;
   border-radius: 24px;
@@ -104,4 +105,20 @@ export const LinkButton = styled.a`
 
 export const GithubIcon = styled(FaGithub)`
   ${iconCSS}
+`;
+
+export const Avatar = styled.img`
+  width: 20px;
+  border-radius: 50%;
+`;
+
+export const CommitHistoryContainer = styled.div`
+  maxWidth: 1200px;
+  margin: auto;
+  width: 100%;
+  > ol {
+    border: grey solid 1px; 
+    list-style: none;
+    border-radius: 5px;
+  }
 `;

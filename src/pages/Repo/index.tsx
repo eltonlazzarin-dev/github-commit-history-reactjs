@@ -10,36 +10,126 @@ import {
   ForkIcon,
   LinkButton,
   GithubIcon,
+  CommitHistoryContainer
 } from './styles';
 
-import { APIRepo } from '../../@types';
+import CommitHistory from '../../components/CommitHistory';
+
+import { APIRepo, APICommit } from '../../@types';
 
 interface Data {
   repo?: APIRepo;
   error?: string;
 }
 
+interface CommitData {
+  commits?: APICommit[];
+  error?: string;
+}
+
 const Repo: React.FC = () => {
   const { username, reponame } = useParams();
   const [data, setData] = useState<Data>();
+  const [commitData, setCommitData] = useState<CommitData>();
+
+  const sliceSHA = (sha:string) => {
+    return sha.slice(0, 7);
+  }
+
+  const generateTime = (time:string) => {
+    var now = new Date();
+    var commit = new Date(time);
+    var nowTime = now.getTime();
+    var commitTime = commit.getTime();
+    var timeScale = "";
+    const diffSecond =  Math.floor((nowTime - commitTime) / 1000);
+    const diffMin = Math.floor(diffSecond / 60);
+    if (diffMin > 1) {
+      const diffHour = Math.floor(diffMin / 60);
+      if (diffHour > 1) {
+        const diffDay = Math.floor(diffHour / 24);
+        if (diffDay > 1) {
+          const diffMonth = Math.floor(diffDay / 30);
+          if (diffMonth > 1) {
+            const diffYear = Math.floor(diffMonth / 12);
+            if (diffYear > 1) {
+              timeScale = diffYear + " years";
+            } else {
+              if (diffYear === 1) {
+                timeScale = diffYear + " year";
+              } else {
+                timeScale = diffMonth + " months";
+              }
+            }
+          } else {
+            if (diffMonth === 1) {
+              timeScale = diffMonth + " month";
+            } else {
+              timeScale = diffDay + " days";
+            }
+          }
+        } else {
+          if (diffDay === 1) {
+            timeScale = diffDay + " day";
+          } else {
+            timeScale = diffHour + " hours";
+          }
+        }
+      } else {
+        if (diffHour === 1) {
+          timeScale = diffHour + " hour";
+        } else {
+          timeScale = diffMin + " mins";
+        }
+      }
+    } else {
+      if (diffMin === 1) {
+        timeScale = diffMin + " minute";
+      } else {
+        timeScale = diffSecond + " seconds";
+      }
+    }
+    
+    return "committed " + timeScale + " ago";
+  }
 
   useEffect(() => {
-    fetch(`https://api.github.com/repos/${username}/${reponame}`).then(
-      async (response) => {
-        setData(
-          response.status === 404
-            ? { error: 'Repository not found!' }
-            : { repo: await response.json() }
-        );
-      }
-    );
+    Promise.all([
+      fetch(`https://api.github.com/repos/${username}/${reponame}`),
+      fetch(`https://api.github.com/repos/${username}/${reponame}/commits`),
+    ])
+      .then(
+        async (responses) => {
+          const [repoResponse, commitResponse] = responses;
+
+          const commitHistory = await commitResponse.json();
+          setCommitData(
+            commitResponse.status === 404
+            ? { error: 'Commit history not found!'}
+            : { commits: commitHistory }
+            );
+          setData(
+            repoResponse.status === 404
+              ? { error: 'Repository not found!' }
+              : { repo: await repoResponse.json() }
+          );
+        }
+      );
   }, [reponame, username]);
 
-  if (data?.error) {
+  if (data?.error ) {
     return <h1>{data.error}</h1>;
   }
 
   if (!data?.repo) {
+    return <h1>Loading...</h1>;
+  }
+  
+  if (commitData?.error ) {
+    return <h1>{commitData.error}</h1>;
+  }
+
+  if (!commitData?.commits) {
     return <h1>Loading...</h1>;
   }
 
@@ -78,6 +168,21 @@ const Repo: React.FC = () => {
         <GithubIcon />
         <span>View on GitHub</span>
       </LinkButton>
+      <CommitHistoryContainer>
+        <ol>
+          {
+            commitData.commits.map((item, index) => (
+              <CommitHistory
+                key = {index}
+                commitmessage={item.commit.message}
+                committer={item.commit.author.name}
+                committime={generateTime(item.commit.author.date)}
+                avatar={item.author.avatar_url}
+                commitsha={sliceSHA(item.sha)}
+              />
+          ))}
+        </ol>
+      </CommitHistoryContainer>
     </Container>
   );
 };
