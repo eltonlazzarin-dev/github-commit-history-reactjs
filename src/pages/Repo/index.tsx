@@ -53,44 +53,44 @@ const Repo: React.FC = () => {
           if (diffMonth > 1) {
             const diffYear = Math.floor(diffMonth / 12);
             if (diffYear > 1) {
-              timeScale = diffYear + " years";
+              timeScale = diffYear + " years ago";
             } else {
               if (diffYear === 1) {
-                timeScale = diffYear + " year";
+                timeScale = diffYear + " year ago";
               } else {
-                timeScale = diffMonth + " months";
+                timeScale = diffMonth + " months ago";
               }
             }
           } else {
             if (diffMonth === 1) {
-              timeScale = diffMonth + " month";
+              timeScale = diffMonth + " month ago";
             } else {
-              timeScale = diffDay + " days";
+              timeScale = diffDay + " days ago";
             }
           }
         } else {
           if (diffDay === 1) {
-            timeScale = diffDay + " day";
+            timeScale = "yesterday";
           } else {
-            timeScale = diffHour + " hours";
+            timeScale = diffHour + " hours ago";
           }
         }
       } else {
         if (diffHour === 1) {
-          timeScale = diffHour + " hour";
+          timeScale = diffHour + " hour ago";
         } else {
-          timeScale = diffMin + " mins";
+          timeScale = diffMin + " mins ago";
         }
       }
     } else {
       if (diffMin === 1) {
-        timeScale = diffMin + " minute";
+        timeScale = diffMin + " minute ago";
       } else {
-        timeScale = diffSecond + " seconds";
+        timeScale = diffSecond + " seconds ago";
       }
     }
     
-    return "committed " + timeScale + " ago";
+    return "committed " + timeScale;
   }
 
   useEffect(() => {
